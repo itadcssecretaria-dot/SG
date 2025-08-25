@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SG - Servir e Gerir</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div id="login-page" class="page active">
+            <div class="login-container">
+                <img src="https://via.placeholder.com/150" alt="Logo" class="login-logo">
+                <h2>Bem-vindo ao SG - Servir e Gerir</h2>
+                <p>O sistema completo para sua cantina.</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                </form>
+                <p class="error-message" id="login-error-message"></p>
+            </div>
+        </div>
+
+        <!-- Main App Layout -->
+        <div id="main-app-layout" class="hidden">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <img src="https://via.placeholder.com/80" alt="Logo" class="sidebar-logo">
+                    <h3>SG - Servir e Gerir</h3>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li><a href="#dashboard" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                        <li><a href="#products" class="nav-link" data-page="products">Produtos</a></li>
+                        <li><a href="#clients" class="nav-link" data-page="clients">Clientes</a></li>
+                        <li><a href="#sales" class="nav-link" data-page="sales">Vendas</a></li>
+                        <li><a href="#receivables" class="nav-link" data-page="receivables">Contas a Receber</a></li>
+                        <li><a href="#reports" class="nav-link" data-page="reports">Relatórios</a></li>
+                        <li><a href="#settings" class="nav-link" data-page="settings">Configurações</a></li>
+                        <li><a href="#logout" class="nav-link" data-page="logout">Sair</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="content">
+                <header class="navbar">
+                    <div class="navbar-left">
+                        <span class="current-page-title" id="current-page-title">Dashboard</span>
+                    </div>
+                    <div class="navbar-right">
+                        <span class="user-info" id="user-info"></span>
+                        <button class="btn-icon" id="logout-button-navbar"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                    </div>
+                </header>
+
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page content-section active">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard-grid">
+                        <div class="card metric-card">
+                            <h3>Vendas Hoje</h3>
+                            <p class="metric-value">R$ 0,00</p>
+                        </div>
+                        <div class="card metric-card">
+                            <h3>Produtos Vendidos</h3>
+                            <p class="metric-value">0</p>
+                        </div>
+                        <div class="card metric-card">
+                            <h3>Novos Clientes</h3>
+                            <p class="metric-value">0</p>
+                        </div>
+                        <div class="card metric-card">
+                            <h3>Contas a Receber</h3>
+                            <p class="metric-value">R$ 0,00</p>
+                        </div>
+                    </div>
+                    <div class="chart-container card">
+                        <h3>Vendas por Mês</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Products Page -->
+                <div id="products-page" class="page content-section">
+                    <h2>Produtos</h2>
+                    <div class="controls">
+                        <input type="text" id="product-search" placeholder="Buscar produto...">
+                        <button class="btn-primary" id="add-product-btn">Novo Produto</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="products-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Preço</th>
+                                    <th>Estoque</th>
+                                    <th>Categoria</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Product rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="products-empty-state">
+                        <p>Nenhum produto cadastrado ainda.</p>
+                        <button class="btn-secondary" id="add-product-empty-btn">Adicionar Primeiro Produto</button>
+                    </div>
+                </div>
+
+                <!-- Clients Page -->
+                <div id="clients-page" class="page content-section">
+                    <h2>Clientes</h2>
+                    <div class="controls">
+                        <input type="text" id="client-search" placeholder="Buscar cliente...">
+                        <button class="btn-primary" id="add-client-btn">Novo Cliente</button>
+                    </div>
+                    <div class="filters">
+                        <button class="btn-filter active" data-filter="all">Todos</button>
+                        <button class="btn-filter" data-filter="active">Ativos</button>
+                        <button class="btn-filter" data-filter="inactive">Inativos</button>
+                        <button class="btn-filter" data-filter="debtors">Devedores</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="clients-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Client rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="clients-empty-state">
+                        <p>Nenhum cliente cadastrado ainda.</p>
+                        <button class="btn-secondary" id="add-client-empty-btn">Adicionar Primeiro Cliente</button>
+                    </div>
+                </div>
+
+                <!-- Sales Page -->
+                <div id="sales-page" class="page content-section">
+                    <h2>Frente de Caixa (Vendas )</h2>
+                    <div class="sales-layout">
+                        <div class="sales-products-section">
+                            <input type="text" id="sale-product-search" placeholder="Buscar produto para venda...">
+                            <div class="product-list-for-sale" id="product-list-for-sale">
+                                <!-- Products will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="sales-cart-section">
+                            <h3>Carrinho de Vendas</h3>
+                            <div class="cart-items" id="cart-items">
+                                <!-- Cart items will be added here -->
+                                <p class="empty-cart-message">Carrinho vazio. Adicione produtos!</p>
+                            </div>
+                            <div class="cart-summary">
+                                <div class="summary-item">
+                                    <span>Subtotal:</span>
+                                    <span id="cart-subtotal">R$ 0,00</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Desconto (%):</span>
+                                    <input type="number" id="cart-discount-percentage" value="0" min="0" max="100">
+                                </div>
+                                <div class="summary-item">
+                                    <span>Desconto (R$):</span>
+                                    <input type="number" id="cart-discount-value" value="0.00" min="0" step="0.01">
+                                </div>
+                                <div class="summary-item total">
+                                    <span>Total:</span>
+                                    <span id="cart-total">R$ 0,00</span>
+                                </div>
+                            </div>
+                            <div class="cart-actions">
+                                <button class="btn-primary" id="finalize-sale-btn">Finalizar Venda</button>
+                                <button class="btn-secondary" id="cancel-sale-btn">Cancelar Venda</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receivables Page -->
+                <div id="receivables-page" class="page content-section">
+                    <h2>Contas a Receber</h2>
+                    <div class="controls">
+                        <input type="text" id="receivable-search" placeholder="Buscar conta...">
+                        <button class="btn-primary" id="add-receivable-btn">Nova Conta</button>
+                    </div>
+                    <div class="filters">
+                        <button class="btn-filter active" data-filter="all">Todas</button>
+                        <button class="btn-filter" data-filter="open">Em Aberto</button>
+                        <button class="btn-filter" data-filter="paid">Pagas</button>
+                        <button class="btn-filter" data-filter="overdue">Vencidas</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="receivables-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Valor</th>
+                                    <th>Vencimento</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Receivables rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="empty-state" id="receivables-empty-state">
+                        <p>Nenhuma conta a receber cadastrada ainda.</p>
+                        <button class="btn-secondary" id="add-receivable-empty-btn">Adicionar Primeira Conta</button>
+                    </div>
+                </div>
+
+                <!-- Reports Page -->
+                <div id="reports-page" class="page content-section">
+                    <h2>Relatórios</h2>
+                    <div class="report-filters">
+                        <label for="report-type">Tipo de Relatório:</label>
+                        <select id="report-type">
+                            <option value="sales-summary">Resumo de Vendas</option>
+                            <option value="product-performance">Desempenho de Produtos</option>
+                            <option value="client-debt">Dívida de Clientes</option>
+                        </select>
+                        <label for="report-period">Período:</label>
+                        <select id="report-period">
+                            <option value="today">Hoje</option>
+                            <option value="last-7-days">Últimos 7 Dias</option>
+                            <option value="this-month">Este Mês</option>
+                            <option value="last-month">Mês Passado</option>
+                            <option value="this-year">Este Ano</option>
+                        </select>
+                        <button class="btn-primary" id="generate-report-btn">Gerar Relatório</button>
+                    </div>
+                    <div class="report-output card">
+                        <h3>Resultados do Relatório</h3>
+                        <div id="report-content">
+                            <p>Selecione um tipo de relatório e um período para gerar.</p>
+                            <!-- Report content will be loaded here -->
+                        </div>
+                        <canvas id="reportChart" style="display: none;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings-page" class="page content-section">
+                    <h2>Configurações</h2>
+                    <div class="settings-section card">
+                        <h3>Configurações Gerais</h3>
+                        <div class="input-group">
+                            <label for="company-name">Nome da Cantina:</label>
+                            <input type="text" id="company-name" value="Cantina ADCS">
+                        </div>
+                        <div class="input-group">
+                            <label for="currency-symbol">Símbolo da Moeda:</label>
+                            <input type="text" id="currency-symbol" value="R$">
+                        </div>
+                        <button class="btn-primary">Salvar Configurações</button>
+                    </div>
+
+                    <div class="settings-section card">
+                        <h3>Gerenciamento de Usuários</h3>
+                        <div class="table-responsive">
+                            <table id="users-table" class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome Completo</th>
+                                        <th>Email</th>
+                                        <th>Admin</th>
+                                        <th>Ativo</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- User rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn-primary" id="add-user-btn">Adicionar Novo Usuário</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <!-- Product Modal -->
+        <div id="product-modal" class="modal-content">
+            <h3>Adicionar/Editar Produto</h3>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="input-group">
+                    <label for="product-name">Nome:</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="product-price">Preço:</label>
+                    <input type="number" id="product-price" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label for="product-stock">Estoque:</label>
+                    <input type="number" id="product-stock" required>
+                </div>
+                <div class="input-group">
+                    <label for="product-category">Categoria:</label>
+                    <select id="product-category" required>
+                        <!-- Categories will be loaded here -->
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" id="cancel-product-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Client Modal -->
+        <div id="client-modal" class="modal-content">
+            <h3>Adicionar/Editar Cliente</h3>
+            <form id="client-form">
+                <input type="hidden" id="client-id">
+                <div class="input-group">
+                    <label for="client-name">Nome:</label>
+                    <input type="text" id="client-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="client-phone">Telefone:</label>
+                    <input type="text" id="client-phone">
+                </div>
+                <div class="input-group">
+                    <label for="client-email">Email:</label>
+                    <input type="email" id="client-email">
+                </div>
+                <div class="input-group">
+                    <label for="client-status">Status:</label>
+                    <select id="client-status">
+                        <option value="active">Ativo</option>
+                        <option value="inactive">Inativo</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" id="cancel-client-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Receivable Modal -->
+        <div id="receivable-modal" class="modal-content">
+            <h3>Adicionar/Editar Conta a Receber</h3>
+            <form id="receivable-form">
+                <input type="hidden" id="receivable-id">
+                <div class="input-group">
+                    <label for="receivable-client">Cliente:</label>
+                    <select id="receivable-client" required>
+                        <!-- Clients will be loaded here -->
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="receivable-amount">Valor:</label>
+                    <input type="number" id="receivable-amount" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label for="receivable-due-date">Data de Vencimento:</label>
+                    <input type="date" id="receivable-due-date" required>
+                </div>
+                <div class="input-group">
+                    <label for="receivable-status">Status:</label>
+                    <select id="receivable-status">
+                        <option value="open">Em Aberto</option>
+                        <option value="paid">Paga</option>
+                        <option value="overdue">Vencida</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" id="cancel-receivable-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- User Modal (for Settings page) -->
+        <div id="user-modal" class="modal-content">
+            <h3>Adicionar/Editar Usuário</h3>
+            <form id="user-form">
+                <input type="hidden" id="user-id">
+                <div class="input-group">
+                    <label for="user-full-name">Nome Completo:</label>
+                    <input type="text" id="user-full-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="user-email">Email:</label>
+                    <input type="email" id="user-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="user-password">Senha:</label>
+                    <input type="password" id="user-password">
+                    <small>Deixe em branco para manter a senha atual.</small>
+                </div>
+                <div class="input-group">
+                    <label for="user-is-admin">Administrador:</label>
+                    <input type="checkbox" id="user-is-admin">
+                </div>
+                <div class="input-group">
+                    <label for="user-is-active">Ativo:</label>
+                    <input type="checkbox" id="user-is-active" checked>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Salvar</button>
+                    <button type="button" class="btn-secondary" id="cancel-user-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmation-modal" class="modal-content small-modal">
+            <h3>Confirmar Ação</h3>
+            <p id="confirmation-message"></p>
+            <div class="modal-actions">
+                <button class="btn-danger" id="confirm-action-btn">Confirmar</button>
+                <button class="btn-secondary" id="cancel-confirmation-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Font Awesome for icons -->
+</body>
+</html>
