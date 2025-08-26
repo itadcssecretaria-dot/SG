@@ -1,45 +1,50 @@
 import os
-import sys
-
-# Carrega as variáveis de ambiente do arquivo .env antes de qualquer importação
-from dotenv import load_dotenv
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
-
-# DON\"T CHANGE THIS !!!
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 from flask import Flask, send_from_directory
-from src.models.user import db
+from flask_cors import CORS
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
+
+# Importar as blueprints
 from src.routes.user import user_bp
-from src.routes.product import product_bp
-
 from src.routes.client import client_bp
-from src.routes.sale import sale_bp
+from src.routes.category_service import category_bp
 
-app = Flask(__name__, static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'src', 'static'))
-app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'SG_Servir_e_Gerir_2025_ADCS_Secret_Key')
+# Configurar a Supabase
+from supabase import create_client, Client
 
-app.register_blueprint(user_bp, url_prefix='/api')
-app.register_blueprint(product_bp, url_prefix='/api')
-app.register_blueprint(client_bp, url_prefix='/api')
-app.register_blueprint(sale_bp, url_prefix='/api')
+# Inicializar o Flask
+def create_app():
+    app = Flask(__name__, static_folder='src/static')
+    app.config.from_object('src.config.Config')
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    static_folder_path = app.static_folder
-    if static_folder_path is None:
-            return "Static folder not configured", 404
+    # Configurar CORS
+    CORS(app)
 
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
-    else:
-        index_path = os.path.join(static_folder_path, 'index.html')
-        if os.path.exists(index_path):
-            return send_from_directory(static_folder_path, 'index.html')
+    # Inicializar o cliente Supabase
+    supabase: Client = create_client(
+        os.environ.get("SUPABASE_URL"), 
+        os.environ.get("SUPABASE_KEY")
+    )
+    app.config["SUPABASE_CLIENT"] = supabase
+
+    # Registrar blueprints
+    app.register_blueprint(user_bp, url_prefix='/api')
+    app.register_blueprint(client_bp, url_prefix='/api')
+    app.register_blueprint(category_bp, url_prefix='/api')
+
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve(path):
+        if path != "" and os.path.exists(app.static_folder + "/" + path):
+            return send_from_directory(app.static_folder, path)
         else:
-            return "index.html not found", 404
+            return send_from_directory(app.static_folder, "index.html")
 
+    return app
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=True)
