@@ -16,10 +16,12 @@
       "dest": "run_server.py"
     },
     {
+      "src": "/static/(.*)",
+      "dest": "src/static/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "src/static/index.html"
     }
   ]
 }
-
-
