@@ -4,254 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SG App</title>
-    <!-- Adicionando um CDN confiável para Font Awesome para evitar o erro de CORS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Adicionando o arquivo de estilo local com o novo caminho -->
-    <link rel="stylesheet" href="/styles.css">
-    <!-- Adicionando o arquivo de JavaScript local com o novo caminho -->
-    <script src="/static/app.js"></script>
+    <!-- Inclui o Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Ícone da página -->
+    <link rel="icon" href="/static/favicon.ico">
 </head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
-
-    <!-- Login Page -->
-    <div id="login-page" class="flex items-center justify-center min-h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+<body>
+    <!-- Seções da página -->
+    <!-- Página de Login -->
+    <div id="login-page" class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+            <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Login</h1>
             <form id="login-form">
                 <div class="mb-4">
-                    <label for="login-email" class="block text-gray-700 font-bold mb-2">Email</label>
-                    <input type="email" id="login-email" name="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="login-email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="login-email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div class="mb-6">
-                    <label for="login-password" class="block text-gray-700 font-bold mb-2">Senha</label>
-                    <input type="password" id="login-password" name="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="login-password" class="block text-gray-700 font-semibold mb-2">Senha</label>
+                    <input type="password" id="login-password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div id="login-error-message" class="text-red-500 text-sm mb-4 hidden"></div>
-                <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">Entrar</button>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Entrar</button>
             </form>
         </div>
     </div>
 
-    <!-- Main App Layout -->
-    <div id="main-app-layout" class="hidden min-h-screen flex flex-col">
-        <!-- Navbar -->
-        <nav class="bg-blue-600 text-white p-4 shadow-lg">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <span class="text-xl font-bold">SG App</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span id="user-info" class="text-sm"></span>
-                    <button id="logout-button-navbar" class="text-sm font-bold hover:text-blue-200 transition-colors">Sair</button>
-                </div>
+    <!-- Layout da Aplicação Principal -->
+    <div id="main-app-layout" class="hidden min-h-screen bg-gray-100 font-sans">
+        <!-- Barra de Navegação Superior -->
+        <header class="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
+            <h1 id="current-page-title" class="text-2xl font-bold text-gray-800">Dashboard</h1>
+            <div class="flex items-center space-x-4">
+                <span id="user-info" class="text-gray-700 font-medium"></span>
+                <button id="logout-button-navbar" class="bg-red-500 text-white font-semibold py-1 px-3 rounded-lg hover:bg-red-600 transition-colors">Sair</button>
             </div>
-        </nav>
+        </header>
 
-        <!-- Main Content Area -->
-        <div class="flex-1 flex">
+        <!-- Container principal com sidebar e conteúdo -->
+        <div class="flex">
             <!-- Sidebar -->
-            <aside class="w-64 bg-gray-800 text-gray-200 p-4 shadow-inner">
-                <h3 class="text-lg font-bold mb-4">Navegação</h3>
-                <ul class="space-y-2">
-                    <li><a href="#dashboard" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Dashboard</a></li>
-                    <li><a href="#products" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Produtos</a></li>
-                    <li><a href="#clients" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Clientes</a></li>
-                    <li><a href="#sales" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Vendas</a></li>
-                    <li><a href="#receivables" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Contas a Receber</a></li>
-                    <li><a href="#reports" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Relatórios</a></li>
-                    <li><a href="#settings" class="nav-link block p-2 rounded-lg hover:bg-blue-500 transition-colors">Configurações</a></li>
+            <nav class="bg-gray-800 text-white w-64 p-6 min-h-screen">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-4">SG App</h2>
+                </div>
+                <ul>
+                    <li class="mb-4">
+                        <a href="#dashboard" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="dashboard">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#products" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="products">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            Produtos
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#clients" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="clients">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a4 4 0 014-4h.5a4 4 0 014 4v1m0 0h1.5m-1.5 0a4 4 0 00-4-4H9.25M17 9v6m3-3h-6"></path></svg>
+                            Clientes
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#sales" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="sales">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l-2 2h4l-2-2m2 10a2 2 0 100-4 2 2 0 000 4zm0 0h5m-5 0v3m0 0h2a2 2 0 002-2v-3a2 2 0 00-2-2h-2m-2-2V3a1 1 0 011-1h4a1 1 0 011 1v2"></path></svg>
+                            Vendas
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#receivables" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="receivables">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zM9 9h6"></path></svg>
+                            Contas a Receber
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#reports" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="reports">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V3a1 1 0 011-1h4a1 1 0 011 1v14M3 7h18M3 11h18M3 15h18M3 19h18"></path></svg>
+                            Relatórios
+                        </a>
+                    </li>
+                    <li class="mb-4">
+                        <a href="#settings" class="nav-link flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors" data-page="settings">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.941 3.31.829 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.941 1.543-.829 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.941-3.31-.829-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.941-1.543.829-3.31 2.37-2.37.996.608 2.228.718 3.46.243z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Configurações
+                        </a>
+                    </li>
                 </ul>
-            </aside>
+            </nav>
 
-            <!-- Page Content -->
+            <!-- Conteúdo principal -->
             <main class="flex-1 p-8 overflow-y-auto">
-                <h1 id="current-page-title" class="text-3xl font-bold mb-6 text-gray-800"></h1>
+                <!-- Seção do Dashboard -->
+                <section id="dashboard-page" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Visão Geral</h2>
+                    <p class="text-gray-600">Bem-vindo ao painel de controle!</p>
+                </section>
 
-                <!-- Dashboard Page -->
-                <div id="dashboard-page" class="page hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                            <h4 class="text-xl font-semibold text-gray-700">Vendas do Mês</h4>
-                            <p class="text-3xl font-bold text-blue-500 mt-2">R$ 5.400,00</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                            <h4 class="text-xl font-semibold text-gray-700">Novos Clientes</h4>
-                            <p class="text-3xl font-bold text-green-500 mt-2">15</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                            <h4 class="text-xl font-semibold text-gray-700">Estoque Baixo</h4>
-                            <p class="text-3xl font-bold text-red-500 mt-2">8</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                            <h4 class="text-xl font-semibold text-gray-700">Contas a Receber</h4>
-                            <p class="text-3xl font-bold text-yellow-500 mt-2">R$ 1.250,00</p>
-                        </div>
+                <!-- Seção de Produtos -->
+                <section id="products-page" class="page-content hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Produtos</h2>
+                        <button id="add-product-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Adicionar Produto</button>
                     </div>
-                </div>
+                    <div id="products-table-container" class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
+                        <!-- Tabela de produtos será inserida aqui dinamicamente -->
+                        <table class="w-full text-left table-auto">
+                            <thead>
+                                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <th class="py-3 px-6">Nome</th>
+                                    <th class="py-3 px-6">Preço</th>
+                                    <th class="py-3 px-6">Estoque</th>
+                                    <th class="py-3 px-6">Categoria</th>
+                                    <th class="py-3 px-6">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm font-light" id="products-table-body">
+                                <!-- Conteúdo dinâmico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-                <!-- Products Page -->
-                <div id="products-page" class="page hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold">Gerenciar Produtos</h2>
-                        <button id="add-product-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Adicionar Produto</button>
+                <!-- Seção de Clientes -->
+                <section id="clients-page" class="page-content hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Clientes</h2>
+                        <button id="add-client-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Adicionar Cliente</button>
                     </div>
-                    <div id="products-list" class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Product list will be rendered here by JS -->
+                    <div id="clients-table-container" class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
+                        <!-- Tabela de clientes será inserida aqui dinamicamente -->
+                        <table class="min-w-full text-left table-auto">
+                            <thead>
+                                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <th class="py-3 px-6">Nome</th>
+                                    <th class="py-3 px-6">Email</th>
+                                    <th class="py-3 px-6">Telefone</th>
+                                    <th class="py-3 px-6">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm font-light" id="clients-table-body">
+                                <!-- Conteúdo dinâmico -->
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                </section>
 
-                <!-- Clients Page -->
-                <div id="clients-page" class="page hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold">Gerenciar Clientes</h2>
-                        <button id="add-client-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Adicionar Cliente</button>
+                <!-- Seção de Vendas -->
+                <section id="sales-page" class="page-content hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Vendas</h2>
+                        <button id="add-sale-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Nova Venda</button>
                     </div>
-                    <div id="clients-list" class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Client list will be rendered here by JS -->
+                    <div id="sales-table-container" class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
+                        <!-- Tabela de vendas será inserida aqui dinamicamente -->
                     </div>
-                </div>
+                </section>
 
-                <!-- Sales Page -->
-                <div id="sales-page" class="page hidden">
-                    <h2 class="text-2xl font-bold mb-4">Gerenciar Vendas</h2>
+                <!-- Seção de Contas a Receber -->
+                <section id="receivables-page" class="page-content hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Contas a Receber</h2>
+                        <button id="add-receivable-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Novo Lançamento</button>
+                    </div>
+                    <div id="receivables-table-container" class="bg-white rounded-lg shadow-md p-6 overflow-x-auto">
+                        <!-- Tabela de contas a receber será inserida aqui dinamicamente -->
+                    </div>
+                </section>
+
+                <!-- Seção de Relatórios -->
+                <section id="reports-page" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Relatórios</h2>
                     <div class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Sales management content -->
+                        <p class="text-gray-600">Conteúdo dos relatórios...</p>
                     </div>
-                </div>
+                </section>
 
-                <!-- Receivables Page -->
-                <div id="receivables-page" class="page hidden">
-                    <h2 class="text-2xl font-bold mb-4">Contas a Receber</h2>
+                <!-- Seção de Configurações -->
+                <section id="settings-page" class="page-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Configurações</h2>
                     <div class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Receivables content -->
+                        <p class="text-gray-600">Conteúdo das configurações...</p>
                     </div>
-                </div>
-
-                <!-- Reports Page -->
-                <div id="reports-page" class="page hidden">
-                    <h2 class="text-2xl font-bold mb-4">Relatórios</h2>
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Reports content -->
-                    </div>
-                </div>
-
-                <!-- Settings Page -->
-                <div id="settings-page" class="page hidden">
-                    <h2 class="text-2xl font-bold mb-4">Configurações</h2>
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <!-- Settings content -->
-                    </div>
-                </div>
+                </section>
             </main>
         </div>
     </div>
 
-    <!-- Modals (Pop-ups) -->
-    <!-- Product Modal -->
-    <div id="product-modal" class="modal fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <!-- Modais (pop-ups) -->
+    <!-- Modal de Produto -->
+    <div id="product-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Detalhes do Produto</h3>
-                <button class="close-modal text-gray-600 hover:text-gray-900">&times;</button>
-            </div>
+            <h2 id="product-modal-title" class="text-2xl font-bold mb-4">Adicionar Produto</h2>
             <form id="product-form">
                 <input type="hidden" id="product-id">
                 <div class="mb-4">
-                    <label for="product-name" class="block text-gray-700 font-bold mb-2">Nome</label>
-                    <input type="text" id="product-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="product-name" class="block text-gray-700">Nome</label>
+                    <input type="text" id="product-name" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="product-price" class="block text-gray-700 font-bold mb-2">Preço</label>
-                    <input type="number" step="0.01" id="product-price" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="product-price" class="block text-gray-700">Preço</label>
+                    <input type="number" id="product-price" step="0.01" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="product-stock" class="block text-gray-700 font-bold mb-2">Estoque</label>
-                    <input type="number" id="product-stock" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="product-stock" class="block text-gray-700">Estoque</label>
+                    <input type="number" id="product-stock" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
-                <div class="mb-6">
-                    <label for="product-category" class="block text-gray-700 font-bold mb-2">Categoria</label>
-                    <select id="product-category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></select>
+                <div class="mb-4">
+                    <label for="product-category" class="block text-gray-700">Categoria</label>
+                    <select id="product-category" class="w-full px-3 py-2 border rounded-lg">
+                        <!-- Categorias serão carregadas aqui -->
+                    </select>
                 </div>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Salvar</button>
+                    <button type="button" id="close-product-modal-btn" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Client Modal -->
-    <div id="client-modal" class="modal fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <!-- Modal de Cliente -->
+    <div id="client-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Detalhes do Cliente</h3>
-                <button class="close-modal text-gray-600 hover:text-gray-900">&times;</button>
-            </div>
+            <h2 id="client-modal-title" class="text-2xl font-bold mb-4">Adicionar Cliente</h2>
             <form id="client-form">
                 <input type="hidden" id="client-id">
                 <div class="mb-4">
-                    <label for="client-name" class="block text-gray-700 font-bold mb-2">Nome Completo</label>
-                    <input type="text" id="client-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="client-full-name" class="block text-gray-700">Nome Completo</label>
+                    <input type="text" id="client-full-name" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="client-email" class="block text-gray-700 font-bold mb-2">Email</label>
-                    <input type="email" id="client-email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="client-email" class="block text-gray-700">Email</label>
+                    <input type="email" id="client-email" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="client-phone" class="block text-gray-700 font-bold mb-2">Telefone</label>
-                    <input type="tel" id="client-phone" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="mb-6">
-                    <label for="client-address" class="block text-gray-700 font-bold mb-2">Endereço</label>
-                    <textarea id="client-address" rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <label for="client-phone" class="block text-gray-700">Telefone</label>
+                    <input type="tel" id="client-phone" class="w-full px-3 py-2 border rounded-lg">
                 </div>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Salvar</button>
+                    <button type="button" id="close-client-modal-btn" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
-    
-    <!-- User Modal -->
-    <div id="user-modal" class="modal fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+
+    <!-- Modal de Usuário -->
+    <div id="user-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Detalhes do Usuário</h3>
-                <button class="close-modal text-gray-600 hover:text-gray-900">&times;</button>
-            </div>
+            <h2 id="user-modal-title" class="text-2xl font-bold mb-4">Adicionar Usuário</h2>
             <form id="user-form">
                 <input type="hidden" id="user-id">
                 <div class="mb-4">
-                    <label for="user-full-name" class="block text-gray-700 font-bold mb-2">Nome Completo</label>
-                    <input type="text" id="user-full-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="user-full-name" class="block text-gray-700">Nome Completo</label>
+                    <input type="text" id="user-full-name" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="user-email" class="block text-gray-700 font-bold mb-2">Email</label>
-                    <input type="email" id="user-email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <label for="user-email" class="block text-gray-700">Email</label>
+                    <input type="email" id="user-email" class="w-full px-3 py-2 border rounded-lg" required>
                 </div>
                 <div class="mb-4">
-                    <label for="user-password" class="block text-gray-700 font-bold mb-2">Senha</label>
-                    <input type="password" id="user-password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label for="user-password" class="block text-gray-700">Senha (opcional)</label>
+                    <input type="password" id="user-password" class="w-full px-3 py-2 border rounded-lg">
                     <p class="text-sm text-gray-500 mt-1">Deixe em branco para não alterar a senha.</p>
                 </div>
-                <div class="mb-6">
-                    <label for="user-is-admin" class="flex items-center space-x-2">
-                        <input type="checkbox" id="user-is-admin" class="form-checkbox h-5 w-5 text-blue-600">
-                        <span class="text-gray-700 font-bold">É Admin?</span>
-                    </label>
-                </div>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancelar</button>
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Salvar</button>
+                    <button type="button" id="close-user-modal-btn" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400">Cancelar</button>
+                    <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/app.js"></script>
+    <!-- Scripts -->
+    <script src="/static/app.js"></script>
 </body>
 </html>
-
